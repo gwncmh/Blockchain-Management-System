@@ -247,6 +247,3 @@ Dự án phục vụ **mục đích học tập và nghiên cứu**.
 * Ethereum & Solidity
 * Wails Framework
 
-
-👉 Repo này dùng **nộp đồ án hay làm portfolio cá nhân** để mình tinh chỉnh giọng văn cho đúng mục đích?
-```
