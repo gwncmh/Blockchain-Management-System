@@ -1,350 +1,252 @@
-# 🔐 Hệ thống Xác thực và Quản lý Tài liệu Số với Blockchain
+# 🔐 EdSigner
 
-> Bài tập lớn môn Công nghệ Blockchain
+**EdSigner** là ứng dụng **desktop ký số tài liệu điện tử**, sử dụng thuật toán **Ed25519** kết hợp với **Blockchain Ethereum** nhằm đảm bảo **tính toàn vẹn, xác thực danh tính và bằng chứng tồn tại** cho tài liệu số.
 
-## 📖 Giới thiệu
-
-Hệ thống xác thực tài liệu số sử dụng công nghệ Blockchain và chữ ký số, đảm bảo tính toàn vẹn và không thể thay đổi của tài liệu điện tử.
-
-### 🎯 Mục tiêu
-
-1. **Chứng minh tính xác thực** - Xác nhận tài liệu là bản gốc
-2. **Chống giả mạo** - Phát hiện mọi thay đổi trong tài liệu
-3. **Xác minh người ký** - Xác định danh tính người ký và thời điểm ký
-4. **Lưu trữ bằng chứng** - Tạo hồ sơ không thể thay đổi trên blockchain
-
-## 🏗️ Kiến trúc Hệ thống
-
-```
-┌─────────────┐      ┌─────────────┐      ┌──────────────┐
-│   Frontend  │────▶│   Backend   │────▶│  Blockchain  │
-│  React+Vite │      │  Node.js    │      │   Hardhat    │
-└─────────────┘      └─────────────┘      └──────────────┘
-     ↓                      ↓                      ↓
-  Upload File         Calculate Hash       Store Hash
-  Verify File         RSA Signature        Verify Hash
-  View Documents      Interact with        Immutable
-                      Smart Contract       Storage
-```
-
-## 🔧 Công nghệ Sử dụng
-
-### Smart Contract Layer
-- **Solidity** ^0.8.19 - Ngôn ngữ lập trình smart contract
-- **Hardhat** 2.x - Framework phát triển Ethereum
-- **OpenZeppelin** - Thư viện smart contract chuẩn
-
-### Backend Layer
-- **Node.js** < 21 - Runtime JavaScript
-- **Express.js** - Web framework
-- **Ethers.js** v6 - Thư viện tương tác blockchain
-- **Crypto** - Module chữ ký số RSA native
-- **Multer** - Xử lý file upload
-
-### Frontend Layer
-- **React** 18 - UI framework
-- **Vite** - Build tool nhanh
-- **Axios** - HTTP client
-- **CSS3** - Styling hiện đại
-
-## 📂 Cấu trúc Dự án
-
-```
-blockchain-document-auth/
-│
-├── hardhat/                    # Smart Contract Layer
-│   ├── contracts/
-│   │   └── DocumentAuth.sol    # Main smart contract
-│   ├── scripts/
-│   │   └── deploy.js           # Deployment script
-│   ├── test/
-│   │   └── DocumentAuth.test.js # Unit tests
-│   ├── hardhat.config.js       # Hardhat configuration
-│   └── package.json
-│
-├── backend/                    # Backend API Layer
-│   ├── contracts/              # Deployed contract info
-│   ├── server.js               # Express API server
-│   ├── .env                    # Environment variables
-│   └── package.json
-│
-├── frontend/                   # Frontend Layer
-│   ├── src/
-│   │   ├── contracts/          # Contract ABI & address
-│   │   ├── App.jsx             # Main component
-│   │   ├── App.css             # Styles
-│   │   └── main.jsx            # Entry point
-│   └── package.json
-│
-└── README.md                   # This file
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-```bash
-node --version  # Phải < 21
-npm --version
-```
-
-### Installation
-
-```bash
-# 1. Clone repository (hoặc tạo mới)
-git clone <repo-url>
-cd blockchain-document-auth
-
-# 2. Setup Hardhat
-cd hardhat
-npm install
-cd ..
-
-# 3. Setup Backend
-cd backend
-npm install
-cd ..
-
-# 4. Setup Frontend
-cd frontend
-npm install
-cd ..
-```
-
-### Running
-
-**Terminal 1 - Blockchain Node:**
-```bash
-cd hardhat
-npx hardhat node
-```
-
-**Terminal 2 - Deploy Contract:**
-```bash
-cd hardhat
-npx hardhat run scripts/deploy.js --network localhost
-```
-
-**Terminal 3 - Backend API:**
-```bash
-cd backend
-npm run dev
-```
-
-**Terminal 4 - Frontend:**
-```bash
-cd frontend
-npm run dev
-```
-
-Mở trình duyệt tại: **http://localhost:5173**
-
-## 📋 Tính năng Chính
-
-### 1. 📤 Đăng ký Tài liệu
-
-- Upload file bất kỳ (PDF, DOCX, TXT, hình ảnh...)
-- Tự động tính hash SHA-256
-- Tạo chữ ký số RSA 2048-bit
-- Ghi hash và metadata lên blockchain
-- Trả về transaction hash và block number
-
-### 2. 🔍 Xác minh Tài liệu
-
-- Upload file cần kiểm tra
-- So sánh hash với blockchain
-- Xác minh chữ ký số
-- Hiển thị thông tin người ký và thời gian
-- Phát hiện mọi thay đổi trong file
-
-### 3. 📋 Quản lý Danh sách
-
-- Xem tất cả tài liệu đã đăng ký
-- Lọc theo người ký
-- Xem chi tiết từng tài liệu
-- Theo dõi lịch sử đăng ký
-
-## 🔐 Bảo mật
-
-### Hash Function
-- **SHA-256**: Cryptographic hash function chuẩn
-- One-way function: Không thể reverse
-- Deterministic: Cùng input → cùng output
-- Avalanche effect: Thay đổi 1 bit → hash hoàn toàn khác
-
-### Digital Signature
-- **RSA 2048-bit**: Asymmetric encryption
-- Private key: Ký tài liệu (chỉ người sở hữu có)
-- Public key: Xác minh chữ ký (công khai)
-- Non-repudiation: Không thể chối bỏ
-
-### Blockchain
-- **Immutability**: Dữ liệu không thể thay đổi
-- **Transparency**: Mọi người đều xem được
-- **Decentralization**: Không có single point of failure
-- **Timestamp**: Bằng chứng thời gian không thể giả mạo
-
-## 🧪 Testing
-
-### Chạy Unit Tests
-
-```bash
-cd hardhat
-npx hardhat test
-```
-
-### Test Cases
-
-- ✅ Contract deployment
-- ✅ Document registration
-- ✅ Duplicate prevention
-- ✅ Document verification
-- ✅ Signer verification
-- ✅ Timestamp accuracy
-- ✅ Multiple documents handling
-- ✅ Gas optimization
-
-### Test Coverage
-
-```bash
-npx hardhat coverage
-```
-
-## 📊 Flow Hoạt động
-
-### Đăng ký Tài liệu
-
-```
-User Upload File
-       ↓
-Frontend: File → Buffer
-       ↓
-Backend: Buffer → SHA-256 Hash
-       ↓
-Backend: Hash → RSA Signature
-       ↓
-Smart Contract: Store (Hash + Signature + Metadata)
-       ↓
-Blockchain: Confirm Transaction
-       ↓
-Return: Transaction Hash + Block Number
-```
-
-### Xác minh Tài liệu
-
-```
-User Upload File
-       ↓
-Frontend: File → Buffer
-       ↓
-Backend: Buffer → SHA-256 Hash
-       ↓
-Smart Contract: Query Hash
-       ↓
-Blockchain: Return Document Info (if exists)
-       ↓
-Backend: Verify RSA Signature
-       ↓
-Return: Verified ✅ or Invalid ❌
-```
-
-## 🎓 Giá trị Học thuật
-
-### Kiến thức được áp dụng
-
-1. **Blockchain Fundamentals**
-   - Smart contracts
-   - Transactions
-   - Gas optimization
-   - Events & logs
-
-2. **Cryptography**
-   - Hash functions (SHA-256)
-   - Digital signatures (RSA)
-   - Public/Private key infrastructure
-
-3. **Web Development**
-   - RESTful API design
-   - React component architecture
-   - Asynchronous programming
-   - Error handling
-
-4. **Security**
-   - Input validation
-   - Authentication
-   - Data integrity
-   - Non-repudiation
-
-## 📈 Mở rộng Tương lai
-
-### Phase 2 (Nâng cao)
-- [ ] Kết nối MetaMask wallet
-- [ ] Multi-signature support
-- [ ] IPFS integration (lưu file thật)
-- [ ] Role-based access control
-- [ ] Document expiration
-
-### Phase 3 (Production)
-- [ ] Deploy lên testnet/mainnet
-- [ ] Database integration (PostgreSQL)
-- [ ] User authentication system
-- [ ] Email notifications
-- [ ] Mobile app (React Native)
-
-## 🐛 Troubleshooting
-
-### Lỗi thường gặp
-
-**1. "Cannot find module"**
-```bash
-npm install
-```
-
-**2. "Contract not found"**
-```bash
-cd hardhat
-npx hardhat run scripts/deploy.js --network localhost
-```
-
-**3. "Invalid private key"**
-- Kiểm tra file `.env`
-- Đảm bảo Hardhat node đang chạy
-- Sử dụng private key từ Hardhat test accounts
-
-**4. "Port already in use"**
-```bash
-# Kill process on port
-lsof -ti:3001 | xargs kill -9  # Backend
-lsof -ti:5173 | xargs kill -9  # Frontend
-```
-
-## 📚 Tài liệu Tham khảo
-
-- [Solidity Documentation](https://docs.soliditylang.org/)
-- [Hardhat Documentation](https://hardhat.org/docs)
-- [Ethers.js Documentation](https://docs.ethers.org/)
-- [React Documentation](https://react.dev/)
-- [Express.js Guide](https://expressjs.com/)
-
-## 👥 Đóng góp
-
-Dự án này là bài tập học thuật. Mọi đóng góp, ý kiến đều được hoan nghênh!
-
-## 📄 License
-
-MIT License - Tự do sử dụng cho mục đích học tập
-
-## 🙏 Lời cảm ơn
-
-- Giảng viên môn Công nghệ Blockchain
-- Cộng đồng Ethereum developers
-- OpenZeppelin team
-- Hardhat contributors
+Dự án được xây dựng như một **giải pháp thay thế và bổ trợ** cho chữ ký số truyền thống dựa trên **CA (Certificate Authority)**, tập trung vào **hiệu năng cao, khả năng kiểm chứng độc lập và kiến trúc phi tập trung**.
 
 ---
 
-**📧 Contact:** [Your Email]  
-**🔗 GitHub:** [Your GitHub]  
-**📅 Date:** 2024
+## 🎯 Mục tiêu dự án
 
-**Happy Coding! 🚀**
+- Ký số tài liệu bằng **Ed25519**
+- Xác minh chữ ký **không cần kết nối Internet**
+- Phát hiện mọi chỉnh sửa sau khi ký
+- Cung cấp **bằng chứng tồn tại bất biến** thông qua blockchain
+- Không phụ thuộc vào **tổ chức chứng thực (CA)**
+- Giao diện desktop thân thiện (Windows / macOS / Linux)
+
+---
+
+## 🧠 Tính năng chính
+
+### 🔑 Quản lý khóa (KeyStore v2)
+- Hệ thống **2 cặp khóa**:
+  - **Ed25519**: ký và xác minh tài liệu
+  - **Ethereum**: tương tác blockchain
+- Bảo mật cao:
+  - **Argon2id**: dẫn xuất khóa
+  - **XChaCha20-Poly1305**: mã hóa xác thực
+- Keystore dạng JSON được mã hóa hoàn toàn
+
+---
+
+### ✍️ Ký số tài liệu (3 chế độ)
+- **Embedded**: chữ ký nhúng trực tiếp vào file
+- **Detached**: chữ ký lưu riêng dưới dạng `.sig`
+- **Hybrid**: kết hợp cả hai
+
+**Cấu trúc chữ ký**
+```
+
+[Magic Header: "ED25519SIG"]
+[Version]
+[Public Key]
+[Signature]
+[Metadata (JSON)]
+[Nội dung file gốc]
+
+```
+
+---
+
+### 🔍 Xác minh chữ ký
+- Xác minh chữ ký nhúng hoặc rời
+- Phát hiện mọi thay đổi nội dung file
+- Trích xuất thông tin:
+  - Người ký
+  - Thời điểm ký
+  - Ghi chú bổ sung
+
+---
+
+### ⛓️ Bằng chứng số trên Blockchain
+- Băm tài liệu bằng:
+  - SHA-512 → Keccak-256 (tương thích EVM)
+- Lưu **hash tài liệu** lên blockchain Ethereum
+- Truy xuất:
+  - Transaction hash
+  - Block number
+  - Địa chỉ người đăng ký
+- **Không lưu nội dung file lên blockchain**
+
+---
+
+### 🔐 Cơ chế bảo mật
+- Tự động khóa sau 5 phút không hoạt động
+- Xóa khóa bí mật khỏi bộ nhớ khi logout
+- Chặn ký các file thực thi (`.exe`, `.dll`, `.sh`, …)
+- Không lưu khóa riêng ở dạng plaintext
+
+---
+
+## 🏗️ Tổng quan kiến trúc
+
+```
+
+Người dùng
+↓
+Frontend (Svelte)
+↓
+Backend (Go + Wails)
+↓
+Mô-đun Ed25519 ──┐
+├─ Blockchain Ethereum
+Mô-đun Blockchain ┘
+
+```
+
+---
+
+## 📁 Cấu trúc thư mục
+
+```
+
+EdSigner/
+├── app.go
+├── main.go
+├── go.mod / go.sum
+│
+├── pkg/
+│   ├── ed25519/          # Ký & xác minh Ed25519
+│   └── blockchain/       # Tương tác Ethereum
+│
+├── contracts/
+│   └── DocumentRegistry.sol
+│
+├── build/
+│   ├── contracts/
+│   ├── windows/
+│   └── darwin/
+│
+├── frontend/             # Giao diện Svelte
+└── wails.json
+
+````
+
+---
+
+## ⚙️ Cài đặt & thiết lập
+
+### 1️⃣ Yêu cầu môi trường
+- Go **1.24+**
+- Node.js **18+**
+- Wails CLI
+- Ganache (blockchain local)
+- Truffle
+
+---
+
+### 2️⃣ Cài đặt công cụ
+
+```bash
+go install github.com/wailsapp/wails/v2/cmd/wails@latest
+npm install -g ganache truffle
+````
+
+---
+
+### 3️⃣ Triển khai Smart Contract
+
+Khởi động Ganache:
+
+```bash
+ganache-cli --port 7545
+```
+
+Compile & deploy:
+
+```bash
+truffle compile
+truffle migrate --reset
+```
+
+Cập nhật địa chỉ contract trong `app.go`:
+
+```go
+const (
+    RPC_URL          = "http://127.0.0.1:7545"
+    CONTRACT_ADDRESS = "0xYOUR_CONTRACT_ADDRESS"
+)
+```
+
+---
+
+### 4️⃣ Chạy ứng dụng
+
+#### Chế độ phát triển
+
+```bash
+wails dev
+```
+
+#### Build production
+
+```bash
+wails build -platform windows/amd64
+wails build -platform darwin/universal
+wails build -platform linux/amd64
+```
+
+---
+
+## 🚀 Hướng dẫn sử dụng
+
+1. **Tạo khóa** → sinh keystore được mã hóa
+2. **Mở khóa** → nhập mật khẩu
+3. **Ký file** → chọn chế độ ký và metadata
+4. **Xác minh** → kiểm tra tính toàn vẹn
+5. **Đăng ký blockchain** → tạo bằng chứng số
+
+---
+
+## 📊 Hiệu năng
+
+| Thao tác       | Thời gian          |
+| -------------- | ------------------ |
+| Sinh khóa      | ~2 giây            |
+| Ký file 1MB    | ~10 ms             |
+| Xác minh       | ~5 ms              |
+| Ghi blockchain | ~15 giây (Ganache) |
+
+---
+
+## 🆚 So sánh với chữ ký số CA truyền thống
+
+| Tiêu chí         | CA truyền thống (ECDSA) | EdSigner   |
+| ---------------- | ----------------------- | ---------- |
+| Thuật toán       | ECDSA                   | Ed25519    |
+| Hiệu năng        | Chậm hơn                | Nhanh hơn  |
+| Phụ thuộc CA     | Có                      | Không      |
+| Xác minh offline | Hạn chế                 | Đầy đủ     |
+| Dấu thời gian    | CA Timestamp            | Blockchain |
+| Chi phí          | Phí duy trì CA          | Không      |
+
+> **Lưu ý:** EdSigner không nhằm thay thế chữ ký số CA trong các thủ tục pháp lý nhà nước, mà đóng vai trò **bổ trợ** cho các hệ thống phi tập trung và nghiên cứu.
+
+---
+
+## 🔮 Hướng phát triển
+
+* Ký đa chữ ký (Multi-signature)
+* Lưu trữ IPFS
+* Cơ chế thu hồi chữ ký
+* Tích hợp HSM
+* Timestamp server
+
+---
+
+## 📜 Giấy phép
+
+Dự án phục vụ **mục đích học tập và nghiên cứu**.
+
+---
+
+## 🙌 Ghi nhận
+
+* Thuật toán Ed25519
+* Ethereum & Solidity
+* Wails Framework
+
+
+👉 Repo này dùng **nộp đồ án hay làm portfolio cá nhân** để mình tinh chỉnh giọng văn cho đúng mục đích?
+```
